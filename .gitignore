@@ -2,3 +2,5 @@ venv
 tools/__pycache__/
 conf.json
 test_answer.json
+courses.history
+

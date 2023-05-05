@@ -120,11 +120,14 @@ def main():
     for course in courses:
         print('---------------------------------')
         print(course)
-        tools.get_cours(course)
-        test_url = tools.check_for_test()
-        if test_url != '':
-            browser.get(test_url)
-            tools.passing_test()
+        if not tools.check_course(course):
+            tools.get_cours(course)
+            test_url = tools.check_for_test()
+            if test_url != '':
+                browser.get(test_url)
+                tools.passing_test()
+        else:
+            print('100%')
     # Fin du programme
     browser.quit()
 

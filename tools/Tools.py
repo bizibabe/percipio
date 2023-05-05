@@ -61,8 +61,12 @@ class Tools:
         return True
 
     def get_all_cours(self):
-        btn_show_detail = self.browser.find_elements(By.XPATH,
-            "//button[@class='Button---root---2BQqW Button---flat---fb6Ta Button---medium---1CC5_ Button---center---13Oaw']")
+        
+        xpath = "//button[@class='Button---root---2BQqW Button---flat---fb6Ta Button---medium---1CC5_ Button---center---13Oaw']"
+        
+        WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, xpath)))
+        
+        btn_show_detail = self.browser.find_elements(By.XPATH, xpath)
 
         for btn in btn_show_detail:
             btn.click()
@@ -92,6 +96,7 @@ class Tools:
         return videos
 
     def get_cours(self, course_url: str) -> None:
+        self.course = course_url
         self.browser.get(course_url)
 
     def get_video(self, video_url: str):
@@ -99,6 +104,22 @@ class Tools:
 
     def get_videos(self, video_id: str) -> None:
         self.browser.get(self.url + '/videos/' + video_id)
+        
+    def save_course(self, course) -> None:
+        with open("courses.history", "a+") as f:
+            f.write(course+"\n")
+            
+    def check_course(self, course) -> None:
+        try:
+            with open("courses.history", "r") as f:
+                for line in f:
+                    if course in line:
+                        return True
+                return False
+        except FileNotFoundError:
+            return False
+
+
 
     def launch_video(self) -> None:
         # Lancement de la vidéo
@@ -572,6 +593,7 @@ class Tools:
             score = self.browser.find_element(By.CLASS_NAME, "Assessment---scoreNumber---HtCXE").text
             if score == "100%":
                 print(score)
+                self.save_course(self.course)
                 return True
             return False
         except:
