@@ -485,7 +485,7 @@ class Tools:
 
                 for item in correct_answer:
                     result_to_return[title].append(dict_letter_answer[item])
-            elif 'Correct answers' in div.text:
+            elif 'Correct answer' in div.text:
                 result_to_return[title].append(dict_letter_answer['A'])
                 
 
