@@ -115,6 +115,7 @@ def main():
     tools.go_to_assignement()
     sleep(2)
     courses = tools.get_all_cours()
+    #courses = courses[15:]
     print(f'[+] {len(courses)} cours trouvés !')
     for course in courses:
         print('---------------------------------')

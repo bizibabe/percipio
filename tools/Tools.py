@@ -226,7 +226,6 @@ class Tools:
 
                     elif instruction == "Instruction: Choose the option that best answers the question.":
                         test_answer[course_title][question] = self.find_answer_radio_button()
-                        print()
                     elif instruction == "Instruction: Rank the following items in the correct sequence, by dragging with your mouse or finger. If using a keyboard, Tab between items, press Space Bar to pick up, Arrow keys to move, Space Bar to drop.":
                         test_answer[course_title][question] = self.find_answer_order()
 
@@ -404,26 +403,35 @@ class Tools:
 
     def click_answer_order(self, answer_order):
         key_sorted = sorted(answer_order.keys())
-
         for answer in key_sorted:
             lis_answer = self.browser.find_elements(By.XPATH, "//ol[@class='DraggableList---root---fLcK8']//li")
             sleep(1)
 
             nbr_tab = 1
 
+            # trouver l'élément de la div
+            div_element = self.browser.find_element(By.CLASS_NAME, "Question---rankingQuestionRoot---3XroP")
+
+            # scroller jusqu'au milieu de la div
+            self.browser.execute_script("arguments[0].scrollIntoView({behavior: 'auto', block: 'center', inline: 'center'});", div_element)
+            # récupération de la hauteur de la fenêtre du navigateur
+            height = self.browser.execute_script("return window.innerHeight")
+
+            # utilisation d'une fraction de la hauteur de la fenêtre pour le décalage de déplacement
+            offset = height * 0.1  # 10% de la hauteur de la fenêtre
             for li in lis_answer:
                 if li.text == answer_order[answer]:
                     if nbr_tab > int(answer):
                         while nbr_tab > int(answer):
                             actions = ActionChains(self.browser)
-                            actions.drag_and_drop_by_offset(li, 0, -50).perform()
+                            actions.drag_and_drop_by_offset(li, 0, -offset).perform()
                             sleep(1)
 
                             nbr_tab -= 1
                     else:
                         while nbr_tab < int(answer):
                             actions = ActionChains(self.browser)
-                            actions.drag_and_drop_by_offset(li, 0, 50).perform()
+                            actions.drag_and_drop_by_offset(li, 0, offset).perform()
                             sleep(1)
 
                             nbr_tab += 1
