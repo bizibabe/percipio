@@ -1,5 +1,7 @@
 from selenium import webdriver
-from Tools import Tools
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.common.by import By
+from tools.Tools import Tools
 from time import sleep
 import os
 import sys
@@ -9,20 +11,22 @@ import json
 
 # Lancement d'un webdriver
 def init_webdriver(debug, firefox_location)-> webdriver:
+    options = webdriver.FirefoxOptions()
     if not debug:
-        os.environ['MOZ_HEADLESS'] = '1'
+        options.headless = True
 
     # Les options du navigateur, ici Firefox
     # l'emplacement du navigateur
-    options = webdriver.FirefoxOptions()
     options.binary_location = firefox_location
 
     # Lancement du browser
     # Options : -> emplacement exécutable geckodriver
     #           -> emplacement logs geckodriver
     #           -> options du navigateur
-    browser = webdriver.Firefox(
-        executable_path='selenium/geckodriver.exe', service_log_path='selenium/geckodriver.log', options=options)
+    # Créer un objet Service pour le pilote GeckoDriver
+    gecko_path = 'selenium/geckodriver.exe'
+    gecko_service = Service(executable_path=gecko_path, log_path='selenium/geckodriver.log')
+    browser = webdriver.Firefox(service=gecko_service, options=options)
 
     # browser.maximize_window()
 
@@ -57,7 +61,7 @@ def main():
         sys.exit()
 
     # Argument optionnel
-    debug = False
+    debug = True
 
     # Argument obligatoire
     usr = ''
@@ -109,52 +113,17 @@ def main():
     tools.connection(conf["username"], conf["password"])
 
     tools.go_to_assignement()
-
     sleep(2)
-
-    courses, videos = tools.get_all_cours()
-
-    sleep(1)
-
-    for video in videos:
-        print("Début video : " + video)
-        tools.get_video(video)
-
-        tools.launch_video()
-
-        while browser.find_element_by_xpath("//div[@class='jw-icon jw-icon-inline "
-                                            "jw-button-color jw-reset jw-icon-playback']").get_attribute('aria-label') \
-                != 'Play':
-            sleep(10)
-
-        print("Fin video : " + video)
-
+    courses = tools.get_all_cours()
+    print(f'[+] {len(courses)} cours trouvés !')
     for course in courses:
-
-        print("Début du cours : " + course)
-
+        print('---------------------------------')
+        print(course)
         tools.get_cours(course)
-
-        sleep(1)
-
-        tools.launch_video()
-
-        sleep(1)
-
-        # Tant que le cours n'est pas fini
-        while tools.get_completion_status() is False:
-            sleep(5)
-
-        print("Fin du cours : " + course)
-
         test_url = tools.check_for_test()
-
         if test_url != '':
             browser.get(test_url)
             tools.passing_test()
-
-    print('Tout les cours sont fini !')
-
     # Fin du programme
     browser.quit()
 

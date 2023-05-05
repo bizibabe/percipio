@@ -1,12 +1,14 @@
 # Percipio
 
+Fork de : (https://github.com/Vhelen/percipio)
+Fonctionne sur Percepio 2023 et Selenium 4.9
+
 # Le but de l'outil
 L'outil permet d'automatiser l'e-learning sur la plateforme Percipio.  
 
 # Son fonctionnement
-L'outil va chercher vos cours assignés dans l'onglet Parcours.  
-Il va jouer ensuite toutes les vidéos des cours puis lancer les tests.  
-Pour les tests, il va enregistrer les réponses dans le fichier test_answer.json et recommencer jusqu'à avoir 100%.  
+L'outil va chercher vos cours assignés dans l'onglet Parcours et faire vos tests.  
+Réalisation des tests : il va enregistrer les réponses dans le fichier test_answer.json et recommencer jusqu'à avoir 100%.  
 
 # Installation
 - Installer la librairie Selenium : pip install selenium  

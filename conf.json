@@ -1,8 +1,1 @@
-{
-  "username": "",
-  "password": "",
-  "browser": {
-    "type": "firefox",
-    "location": ""
-  }
-}
+{"username": "", "password": "", "browser": {"type": "firefox", "location": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"}}
