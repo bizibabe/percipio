@@ -11,8 +11,11 @@ L'outil va chercher vos cours assignés dans l'onglet Parcours et faire vos test
 Réalisation des tests : il va enregistrer les réponses dans le fichier test_answer.json et recommencer jusqu'à avoir 100%.  
 
 # Installation
-- Installer la librairie Selenium : pip install selenium  
-- Installer Firefox 64 bits : https://www.mozilla.org/en-US/firefox/browsers/windows-64-bit/  
+- Download : https://www.mozilla.org/en-US/firefox/browsers/windows-64-bit/   
+- python -m venv venv  
+- .\venv\Scripts\activate  
+- pip install selenium 
+- python percifiak.py  
 
 # Configurer le fichier de configuration conf.json
 Ligne de commande :  
